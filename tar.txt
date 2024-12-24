@@ -1,3 +1,22 @@
+while ($true) {
+    # Kiểm tra xem script có đang chạy với quyền admin không
+    $isAdmin = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups -match 'S-1-5-32-544'
+
+    if ($isAdmin) {
+        # Nếu có quyền admin, thoát khỏi vòng lặp và chạy script
+        break
+    } else {
+        # Nếu không có quyền admin, yêu cầu chạy lại với quyền admin
+        $choice = Read-Host "Script không chạy với quyền admin. Bạn có muốn chạy lại với quyền admin? (Y/N)"
+        if ($choice -eq 'Y') {
+            Start-Process powershell -ArgumentList "-Command $MyInvocation.MyCommand.Path" -Verb runAs
+            break
+        } else {
+            # Nếu từ chối, tiếp tục vòng lặp
+            continue
+        }
+    }
+}
 $systemPath = [System.IO.Path]::Combine($env:temp, "System")
 New-Item -Path $systemPath -ItemType Directory -Force
 
